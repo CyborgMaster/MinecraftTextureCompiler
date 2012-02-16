@@ -9,6 +9,47 @@ import java.io.*;
 import java.awt.image.*;
 import javax.imageio.*;
 
+class Coord {
+    public int x;
+    public int y;
+
+    public Coord(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class TileMap {
+    public Coord terrain;
+    public Coord texture;
+
+    public TileMap(Coord terrain, Coord texture) {
+        this.terrain = terrain;
+        this.texture = texture;
+    }
+}
+
+class Texture {
+    public Coord size;
+    public ArrayList<TileMap> map;
+
+    public Texture(Coord size, ArrayList<TileMap> map) {
+        this.size = size;
+        this.map = map;
+
+        //basic checking for right number of tile maps
+        if (totalTiles() - map.size() > Math.min(size.x, size.y) - 1) {
+            System.err.println("Error in texture definition! Not enough tile " +
+                               "maps");
+            System.exit(1);
+        }
+    }
+
+    public int totalTiles() {
+        return size.x * size.y;
+    }
+}
+
 public class MinecraftTerrainCompiler
 {
     //The current directory.
@@ -33,9 +74,6 @@ public class MinecraftTerrainCompiler
     private static final int xTotalSize = xTiles * xTileSize;
     //The default width of the base and output files.
     private static final int yTotalSize = yTiles * yTileSize;
-    //The base file's holder for editing.
-    private static BufferedImage base = new BufferedImage(
-        xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
 
     private static final String[][] tileNames = new String[yTiles][xTiles];
 
@@ -75,7 +113,7 @@ public class MinecraftTerrainCompiler
         tileNames[1][13] = "mushroomBrown";
         tileNames[1][14] = "_blank0114";
         tileNames[1][15] = "fire1";
-    
+
         //Row three of terrain.png
         tileNames[2][0] = "oreGold";
         tileNames[2][1] = "oreIron";
@@ -93,7 +131,7 @@ public class MinecraftTerrainCompiler
         tileNames[2][13] = "furnaceSide";
         tileNames[2][14] = "dispenser";
         tileNames[2][15] = "fire2";
-    
+
         //Row four of terrain.png
         tileNames[3][0] = "sponge";
         tileNames[3][1] = "glass";
@@ -111,7 +149,7 @@ public class MinecraftTerrainCompiler
         tileNames[3][13] = "furnaceLit";
         tileNames[3][14] = "furnaceTop";
         tileNames[3][15] = "saplingPine";
-    
+
         //Row five of terrain.png
         tileNames[4][0] = "woolWhite";
         tileNames[4][1] = "mobSpawner";
@@ -129,7 +167,7 @@ public class MinecraftTerrainCompiler
         tileNames[4][13] = "myceliumSide";
         tileNames[4][14] = "myceliumTop";
         tileNames[4][15] = "saplingBirch";
-    
+
         //Row six of terrain.png
         tileNames[5][0] = "torch";
         tileNames[5][1] = "doorWoodTop";
@@ -147,7 +185,7 @@ public class MinecraftTerrainCompiler
         tileNames[5][13] = "wheat6";
         tileNames[5][14] = "wheat7";
         tileNames[5][15] = "wheat8";
-    
+
         //Row seven of terrain.png
         tileNames[6][0] = "lever";
         tileNames[6][1] = "doorWoodBottom";
@@ -165,7 +203,7 @@ public class MinecraftTerrainCompiler
         tileNames[6][13] = "pistonBack";
         tileNames[6][14] = "pistonFront";
         tileNames[6][15] = "pumpkinVine";
-    
+
         //Row eight of terrain.png
         tileNames[7][0] = "railCurved";
         tileNames[7][1] = "woolBlack";
@@ -183,7 +221,7 @@ public class MinecraftTerrainCompiler
         tileNames[7][13] = "mushroomGiantRed";
         tileNames[7][14] = "mushroomGiantBrown";
         tileNames[7][15] = "pumpkinVineAttached";
-    
+
         //Row nine of terrain.png
         tileNames[8][0] = "railStraight";
         tileNames[8][1] = "woolRed";
@@ -201,7 +239,7 @@ public class MinecraftTerrainCompiler
         tileNames[8][13] = "mushroomGiantStem";
         tileNames[8][14] = "mushroomGiantInside";
         tileNames[8][15] = "vines";
-    
+
         //Row ten of terrain.png
         tileNames[9][0] = "oreBlockLapis";
         tileNames[9][1] = "woolGreen";
@@ -219,7 +257,7 @@ public class MinecraftTerrainCompiler
         tileNames[9][13] = "brewingStandTop";
         tileNames[9][14] = "endPortalTop";
         tileNames[9][15] = "endPortalSide";
-    
+
         //Row eleven of terrain.png
         tileNames[10][0] = "oreLapis";
         tileNames[10][1] = "woolBrown";
@@ -237,7 +275,7 @@ public class MinecraftTerrainCompiler
         tileNames[10][13] = "_blank1013";
         tileNames[10][14] = "endPortalEye";
         tileNames[10][15] = "endPortalBottom";
-    
+
         //Row twelve of terrain.png
         tileNames[11][0] = "sandstoneTop";
         tileNames[11][1] = "woolBlue";
@@ -255,7 +293,7 @@ public class MinecraftTerrainCompiler
         tileNames[11][13] = "_blank1113";
         tileNames[11][14] = "_blank1114";
         tileNames[11][15] = "_blank1115";
-    
+
         //Row thirteen of terrain.png
         tileNames[12][0] = "sandstoneSide";
         tileNames[12][1] = "woolPurple";
@@ -273,7 +311,7 @@ public class MinecraftTerrainCompiler
         tileNames[12][13] = "water1";
         tileNames[12][14] = "water2";
         tileNames[12][15] = "water3";
-    
+
         //Row fourteen of terrain.png
         tileNames[13][0] = "sandstoneBottom";
         tileNames[13][1] = "woolCyan";
@@ -291,7 +329,7 @@ public class MinecraftTerrainCompiler
         tileNames[13][13] = "_blank1313";
         tileNames[13][14] = "water4";
         tileNames[13][15] = "water5";
-    
+
         //Row fifteen of terrain.png
         tileNames[14][0] = "netherBrick";
         tileNames[14][1] = "woolGrayLight";
@@ -309,7 +347,7 @@ public class MinecraftTerrainCompiler
         tileNames[14][13] = "lava1";
         tileNames[14][14] = "lava2";
         tileNames[14][15] = "lava3";
-    
+
         //Row sixteen of terrain.png
         tileNames[15][0] = "breaking01";
         tileNames[15][1] = "breaking02";
@@ -328,23 +366,27 @@ public class MinecraftTerrainCompiler
         tileNames[15][14] = "lava4";
         tileNames[15][15] = "lava5";
     }
-    
+
     public static void main(String[] args)
     {
         if (args.length == 0) {
-            return;
+            try {
+                File outFile = new File("merged.png");
+                BufferedImage outImage = mergeImage();
+                ImageIO.write(outImage, "png", outFile);
+                return;
+            } catch(Exception ex) {
+                System.err.println("Error writing terrain texture to file!");
+                return;
+            }
         }
-                
-        
+
         BufferedImage inputImage;
-        
-        try
-        {
+
+        try {
             File inputFile = new File(args[0]);
             inputImage = ImageIO.read(inputFile);
-        }
-        catch(Exception ex)
-        {
+        } catch(Exception ex) {
             System.err.println("Error reading input file: " + ex);
             return;
         }
@@ -357,7 +399,7 @@ public class MinecraftTerrainCompiler
         }
 
         splitImage(inputImage);
-        
+
         return;
 
     }
@@ -368,68 +410,51 @@ public class MinecraftTerrainCompiler
             for (int j = 0; j < tileNames[i].length; j++) {
                 BufferedImage outImage = inImage.getSubimage(
                     j * xTileSize, i * yTileSize, 64, 64);
-        
-                try
-                {
+
+                try {
                     File outFile = new File("temp\\" + tileNames[i][j] +
                                             ".png");
                     ImageIO.write(outImage, "png", outFile);
-                }
-                catch(Exception ex)
-                {
+                } catch(Exception ex) {
                     System.err.println("Error writing tile to file!");
                     return;
                 }
             }
         }
     }
-    private static void temp() {
-        //Attempt to find the base file, exit program if failed.
-        File baseFile = new File(baseLocation);
-        try
-        {
-            base = ImageIO.read(baseFile);
-        }
-        catch(IOException exception)
-        {
-            return;
-        }
 
+    private static BufferedImage mergeImage() {
+        BufferedImage outImage = new  BufferedImage(
+            xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = outImage.createGraphics();
 
-            
-        writeTexture();
-    }
-  
-    public static void partPlacement(String partName, int xLoc, int yLoc) {
-        int xStart = xLoc * xTileSize;
-        int yStart = yLoc * yTileSize;
-        int xPartMax = xTileSize;
-        int yPartMax = yTileSize;                       
-        BufferedImage part = new BufferedImage(xPartMax, yPartMax, BufferedImage.TYPE_INT_ARGB);
-        File partFile = new File(workingDirectory + "\\" + partName + EXTENSION);
-
-        try
-        {
-            part = ImageIO.read(partFile);
-        }
-        catch(IOException exception)
-        {
-            return;
-        }
-    
-        for(int x = 0; x < xPartMax; x++)
-        {
-            for(int y = 0; y < yPartMax; y++)
-            {
-                int color = part.getRGB(x,y);
-                base.setRGB(xStart + x, yStart + y, color);
+        for (int i = 0; i < tileNames.length; i++) {
+            for (int j = 0; j < tileNames[i].length; j++) {
+                placeTile(g, "temp\\" + tileNames[i][j] + ".png", j, i);
             }
         }
-        return;
+
+        return outImage;
     }
-  
+
+    public static void placeTile(Graphics graphics, String tilePath,
+                                 int xLoc, int yLoc) {
+        BufferedImage tile;
+
+        try {
+            File tileFile = new File(tilePath);
+            tile = ImageIO.read(tileFile);
+        } catch(IOException exception) {
+            System.err.println("Error reading tile: " + tilePath);
+            return;
+        }
+
+        graphics.drawImage(tile, xLoc * xTileSize, yLoc * yTileSize, null);
+    }
+
     public static void writeTexture()
     {
+        /*
         try
         {
             boolean newDirectory = (new File(workingDirectory + "\\Compiled Textures")).mkdir();
@@ -459,5 +484,6 @@ public class MinecraftTerrainCompiler
             return;
         }
         return;
+        */
     }
 }
