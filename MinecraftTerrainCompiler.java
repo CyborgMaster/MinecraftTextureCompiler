@@ -22,16 +22,16 @@ public class MinecraftTerrainCompiler
     //The name of the output file.
     private static final String outputFile = "terrain";
     //The default width of tile pieces.
-    private static final int xDefaultSize = 64;
+    private static final int xTileSize = 64;
     //The default height of tile pieces.
-    private static final int yDefaultSize = 64;
+    private static final int yTileSize = 64;
     //The number of tiles in the x/y axis
     private static final int xTiles = 16;
     private static final int yTiles = 16;
     //The default height of the base and output files.
-    private static final int xTotalSize = xTiles * xDefaultSize;
+    private static final int xTotalSize = xTiles * xTileSize;
     //The default width of the base and output files.
-    private static final int yTotalSize = yTiles * yDefaultSize;
+    private static final int yTotalSize = yTiles * yTileSize;
     //The base file's holder for editing.
     private static BufferedImage base = new BufferedImage(xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
 
@@ -48,124 +48,120 @@ public class MinecraftTerrainCompiler
         tileNames[0][0].add("grass");
         tileNames[0][1].add("stone");
         tileNames[0][2].add("dirt");
-        tileNames[0][3].add("grassydirt");
+        tileNames[0][3].add("grassyDirt");
         tileNames[0][4].add("planks");
-        tileNames[0][5].add("stepsides");
-        tileNames[0][6].add("steptop");
+        tileNames[0][5].add("stoneSlabSides");
+        tileNames[0][6].add("stoneSlabTop");
         tileNames[0][7].add("brick");
         tileNames[0][8].add("tnt");
-        tileNames[0][8].add("tntside");
-        tileNames[0][9].add("tnttop");
-        tileNames[0][10].add("tntbottom");
-        tileNames[0][11].add("web");
-        tileNames[0][12].add("redflower");
-        tileNames[0][13].add("yellowflower");
+        tileNames[0][8].add("tntSide");
+        tileNames[0][9].add("tntTop");
+        tileNames[0][10].add("tntBottom");
+        tileNames[0][11].add("spiderweb");
+        tileNames[0][12].add("redFlower");
+        tileNames[0][13].add("yellowFlower");
         tileNames[0][14].add("portal");
-        tileNames[0][15].add("sapling");
+        tileNames[0][15].add("oakSapling");
 
         //Row two of terrain.png
         tileNames[1][0].add("cobblestone");
         tileNames[1][1].add("bedrock");
         tileNames[1][2].add("sand");
         tileNames[1][3].add("gravel");
-        tileNames[1][4].add("log");
-        tileNames[1][4].add("logside");
-        tileNames[1][5].add("logtop");
-        tileNames[1][6].add("iron");
-        tileNames[1][6].add("irontop");
-        tileNames[1][7].add("gold");
-        tileNames[1][7].add("goldtop");
-        tileNames[1][8].add("diamond");
-        tileNames[1][8].add("diamondtop");
+        tileNames[1][4].add("oakLog");
+        tileNames[1][4].add("oakLogSide");
+        tileNames[1][5].add("logTop");
+        tileNames[1][6].add("ironBlock");
+        tileNames[1][6].add("ironTop");
+        tileNames[1][7].add("goldBlock");
+        tileNames[1][7].add("goldTop");
+        tileNames[1][8].add("diamondBlock");
+        tileNames[1][8].add("diamondTop");
         tileNames[1][9].add("chest");
-        tileNames[1][9].add("smallchest");
-        tileNames[1][9].add("smallchesttop");
-        tileNames[1][10].add("smallchestside");
-        tileNames[1][11].add("smallchestfront");
-        tileNames[1][12].add("redmushroom");
-        tileNames[1][13].add("brownmushroom");
+        tileNames[1][9].add("smallChest");
+        tileNames[1][9].add("smallChestTop");
+        tileNames[1][10].add("smallChestSide");
+        tileNames[1][11].add("smallChestFront");
+        tileNames[1][12].add("redMushroom");
+        tileNames[1][13].add("brownMushroom");
         tileNames[1][14].add("blank001");
         tileNames[1][15].add("fire");
     
         //Row three of terrain.png
-        tileNames[2][0].add("goldore");
-        tileNames[2][1].add("ironore");
-        tileNames[2][2].add("coalore");
+        tileNames[2][0].add("goldOre");
+        tileNames[2][1].add("ironOre");
+        tileNames[2][2].add("coalOre");
         tileNames[2][3].add("bookshelf");
-        tileNames[2][4].add("mossycobblestone");
+        tileNames[2][4].add("mossyCobblestone");
         tileNames[2][5].add("obsidian");
-        tileNames[2][6].add("ironside");
-        tileNames[2][7].add("goldside");
-        tileNames[2][8].add("diamondside");
-        tileNames[2][9].add("largechest");
-        tileNames[2][9].add("largechestfront");
-        tileNames[2][9].add("largechestfrontleft");
-        tileNames[2][10].add("largechestfrontright");
+        tileNames[2][6].add("sideGrass");
+        tileNames[2][7].add("tallGrass");
+        tileNames[2][8].add("blank002");
+        tileNames[2][9].add("largeChest");
+        tileNames[2][9].add("largeChestFront");
+        tileNames[2][9].add("largeChestFrontLeft");
+        tileNames[2][10].add("largeChestFrontRight");
         tileNames[2][11].add("workbench");
-        tileNames[2][11].add("workbenchtopside");
-        tileNames[2][11].add("workbenchtop");
+        tileNames[2][11].add("workbenchTop");
         tileNames[2][12].add("furnace");
-        tileNames[2][12].add("furnacefrontside");
-        tileNames[2][12].add("furnacefront");
-        tileNames[2][13].add("furnaceside");
-        tileNames[2][14].add("blank002");
-        tileNames[2][15].add("blank003");
+        tileNames[2][12].add("furnaceFrontSide");
+        tileNames[2][12].add("furnaceFront");
+        tileNames[2][13].add("furnaceSide");
+        tileNames[2][14].add("dispenser");
+        tileNames[2][14].add("dispenserFront");
+        tileNames[2][15].add("fire2");
     
         //Row four of terrain.png
         tileNames[3][0].add("sponge");
         tileNames[3][1].add("glass");
-        tileNames[3][2].add("diamondore");
-        tileNames[3][3].add("redstoneore");
-        tileNames[3][4].add("leavesandmask");
-        tileNames[3][4].add("leaves");
-        tileNames[3][5].add("leavesmask");
-        tileNames[3][6].add("ironbottom");
-        tileNames[3][7].add("goldbottom");
-        tileNames[3][8].add("diamondbottom");
-        tileNames[3][9].add("largechestback");
-        tileNames[3][9].add("largechestbackleft");
-        tileNames[3][10].add("largechestbackright");
-        tileNames[3][11].add("workbenchsides");
-        tileNames[3][11].add("workbenchside1");
-        tileNames[3][12].add("workbenchside2");
-        tileNames[3][13].add("furnacelit");
-        tileNames[3][14].add("blank004");
-        tileNames[3][15].add("blank005");
+        tileNames[3][2].add("diamondOre");
+        tileNames[3][3].add("redstoneOre");
+        tileNames[3][4].add("leavesFancy");
+        tileNames[3][5].add("leavesFast");
+        tileNames[3][6].add("stoneBrick");
+        tileNames[3][7].add("deadShrub");
+        tileNames[3][8].add("tallGrass2");
+        tileNames[3][9].add("largeChestBack");
+        tileNames[3][9].add("largeChestBackLeft");
+        tileNames[3][10].add("largeChestBackRight");
+        tileNames[3][11].add("workbenchSides");
+        tileNames[3][11].add("workbenchSide1");
+        tileNames[3][12].add("workbenchSide2");
+        tileNames[3][13].add("furnaceLit");
+        tileNames[3][14].add("furnaceTop");
+        tileNames[3][15].add("pineSapling");
     
         //Row five of terrain.png
-        tileNames[4][0].add("wool");
-        tileNames[4][1].add("mobspawner");
+        tileNames[4][0].add("whiteWool");
+        tileNames[4][1].add("mobSpawner");
         tileNames[4][2].add("snow");
         tileNames[4][3].add("ice");
-        tileNames[4][4].add("snowydirt");
+        tileNames[4][4].add("snowyDirt");
         tileNames[4][5].add("cactus");
-        tileNames[4][5].add("cactustop");
-        tileNames[4][6].add("cactusside");
-        tileNames[4][7].add("cactusinside");
+        tileNames[4][5].add("cactusTop");
+        tileNames[4][6].add("cactusSide");
+        tileNames[4][7].add("cactusInside");
         tileNames[4][8].add("clay");
         tileNames[4][9].add("reeds");
         tileNames[4][10].add("jukebox");
-        tileNames[4][10].add("jukeboxside");
-        tileNames[4][11].add("jukeboxtop");
-        tileNames[4][12].add("blank006");
-        tileNames[4][13].add("blank007");
-        tileNames[4][14].add("blank008");
-        tileNames[4][15].add("blank009");
+        tileNames[4][10].add("jukeboxSide");
+        tileNames[4][11].add("jukeboxTop");
+        tileNames[4][12].add("lilyPad");
+        tileNames[4][13].add("myceliumSide");
+        tileNames[4][14].add("myceliumTop");
+        tileNames[4][15].add("birchSapling");
     
         //Row six of terrain.png
         tileNames[5][0].add("torch");
-        tileNames[5][1].add("woodendoor");
-        tileNames[5][1].add("woodendoortop");
-        tileNames[5][2].add("irondoor");
-        tileNames[5][2].add("irondoortop");
+        tileNames[5][1].add("woodenDoor");
+        tileNames[5][1].add("woodenDoorTop");
+        tileNames[5][2].add("ironDoor");
+        tileNames[5][2].add("ironDoorTop");
         tileNames[5][3].add("ladder");
-        tileNames[5][4].add("redstone");
-        tileNames[5][4].add("redstoneoff");
-        tileNames[5][4].add("redstoneintersectoff");
-        tileNames[5][5].add("redstonestraightoff");
-        tileNames[5][6].add("tilleddirt");
-        tileNames[5][6].add("freshtilleddirt");
-        tileNames[5][7].add("messytilleddirt");
+        tileNames[5][4].add("trapDoor");
+        tileNames[5][5].add("ironBars");
+        tileNames[5][6].add("farmlandWet");
+        tileNames[5][7].add("farmlandDry");
         tileNames[5][8].add("wheat");
         tileNames[5][8].add("wheat1");
         tileNames[5][9].add("wheat2");
@@ -366,17 +362,53 @@ public class MinecraftTerrainCompiler
     
     public static void main(String[] args)
     {
-        //try and split the texture
-        for (int i = 0; i < tileNames.length; i++) {
-            for (int j = 0; j < tileNames[i].length; j++) {
-                System.out.println(tileNames[i][j].get(0));
-            }
+        BufferedImage inputImage;
+
+        try
+        {
+            File inputFile = new File(args[0]);
+            inputImage = ImageIO.read(inputFile);
+        }
+        catch(Exception ex)
+        {
+            System.err.println("Error reading input file.");
+            return;
         }
 
+        if (inputImage.getWidth() != xTotalSize ||
+            inputImage.getHeight() != yTotalSize) {
+            System.err.println("Input image wrong size, should be: " +
+                               xTotalSize + " x " + yTotalSize);
+            return;
+        }
+
+        splitImage(inputImage);
+        
         return;
 
     }
 
+    private static void splitImage(BufferedImage inImage) {
+        //split the texture
+        for (int i = 0; i < tileNames.length; i++) {
+            for (int j = 0; j < tileNames[i].length; j++) {
+                BufferedImage outImage = inImage.getSubimage(
+                    j * xTileSize, i * yTileSize, 64, 64);
+        
+                try
+                {
+                    File outFile = new File("temp\\" + tileNames[i][j].get(0) +
+                        ".png");
+                    ImageIO.write(outImage, "png", outFile);
+                }
+                catch(Exception ex)
+                {
+                    System.err.println("Critical failure attempting to write to file!");
+                    return;
+                }
+            }
+        }
+    }
     private static void temp() {
         //Attempt to find the base file, exit program if failed.
         File baseFile = new File(baseLocation);
@@ -395,10 +427,10 @@ public class MinecraftTerrainCompiler
     }
   
     public static void partPlacement(String partName, int xLoc, int yLoc) {
-        int xStart = xLoc * xDefaultSize;
-        int yStart = yLoc * yDefaultSize;
-        int xPartMax = xDefaultSize;
-        int yPartMax = yDefaultSize;                       
+        int xStart = xLoc * xTileSize;
+        int yStart = yLoc * yTileSize;
+        int xPartMax = xTileSize;
+        int yPartMax = yTileSize;                       
         BufferedImage part = new BufferedImage(xPartMax, yPartMax, BufferedImage.TYPE_INT_ARGB);
         File partFile = new File(workingDirectory + "\\" + partName + EXTENSION);
 
