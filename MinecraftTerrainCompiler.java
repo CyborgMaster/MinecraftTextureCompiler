@@ -132,7 +132,7 @@ public class MinecraftTerrainCompiler
         tileNames[3][15].add("pineSapling");
     
         //Row five of terrain.png
-        tileNames[4][0].add("whiteWool");
+        tileNames[4][0].add("woolWhite");
         tileNames[4][1].add("mobSpawner");
         tileNames[4][2].add("snow");
         tileNames[4][3].add("ice");
@@ -174,43 +174,42 @@ public class MinecraftTerrainCompiler
     
         //Row seven of terrain.png
         tileNames[6][0].add("lever");
-        tileNames[6][1].add("woodendoorbottom");
-        tileNames[6][2].add("irondoorbottom");
-        tileNames[6][3].add("redstonetorch");
-        tileNames[6][3].add("redstonetorchon");
-        tileNames[6][4].add("redstoneon");
-        tileNames[6][4].add("redstoneintersecton");
-        tileNames[6][5].add("redstonestraighton");
+        tileNames[6][1].add("woodenDoorBottom");
+        tileNames[6][2].add("ironDoorBottom");
+        tileNames[6][3].add("redstoneTorch");
+        tileNames[6][3].add("redstoneTorchOn");
+        tileNames[6][4].add("mossyStoneBrick");
+        tileNames[6][5].add("crackedStoneBrick");
         tileNames[6][6].add("pumpkin");
-        tileNames[6][6].add("pumpkintop");
+        tileNames[6][6].add("pumpkinTop");
         tileNames[6][7].add("netherrack");
         tileNames[6][8].add("soulsand");
         tileNames[6][9].add("glowstone");
-        tileNames[6][10].add("blank010");
-        tileNames[6][11].add("blank011");
-        tileNames[6][12].add("blank012");
-        tileNames[6][13].add("blank013");
-        tileNames[6][14].add("blank014");
-        tileNames[6][15].add("blank015");
+        tileNames[6][10].add("pistonSticky");
+        tileNames[6][11].add("piston");
+        tileNames[6][12].add("pistonSide");
+        tileNames[6][13].add("pistonBack");
+        tileNames[6][14].add("pistonFront");
+        tileNames[6][15].add("pumpkinVine");
     
         //Row eight of terrain.png
-        tileNames[7][0].add("rail");
-        tileNames[7][0].add("curvedrail");
-        tileNames[7][1].add("blank016");
-        tileNames[7][2].add("blank017");
-        tileNames[7][3].add("redstonetorchoff");
-        tileNames[7][4].add("blank018");
-        tileNames[7][5].add("blank019");
-        tileNames[7][6].add("pumpkinside");
-        tileNames[7][7].add("pumpkinfaceoff");
-        tileNames[7][8].add("pumpkinfaceon");
-        tileNames[7][9].add("blank020");
-        tileNames[7][10].add("blank021");
-        tileNames[7][11].add("blank022");
-        tileNames[7][12].add("blank023");
-        tileNames[7][13].add("blank024");
-        tileNames[7][14].add("blank025");
-        tileNames[7][15].add("blank026");
+        tileNames[7][0].add("railCurved");
+        tileNames[7][0].add("curvedRail");
+        tileNames[7][1].add("woolBlack");
+        tileNames[7][2].add("woolDarkGrey");
+        tileNames[7][3].add("redstoneTorchOff");
+        tileNames[7][4].add("logPine");
+        tileNames[7][5].add("logBirch");
+        tileNames[7][6].add("pumpkinSide");
+        tileNames[7][7].add("pumpkinFaceOff");
+        tileNames[7][8].add("pumpkinFaceOn");
+        tileNames[7][9].add("cakeTop");
+        tileNames[7][10].add("cakeSide");
+        tileNames[7][11].add("cakeInside");
+        tileNames[7][12].add("cakeBottom");
+        tileNames[7][13].add("giantRedMushroom");
+        tileNames[7][14].add("giantBrownMushroom");
+        tileNames[7][15].add("pumpkinVineAttached");
     
         //Row nine of terrain.png
         tileNames[8][0].add("straightrail");
@@ -371,7 +370,7 @@ public class MinecraftTerrainCompiler
         }
         catch(Exception ex)
         {
-            System.err.println("Error reading input file.");
+            System.err.println("Error reading input file: " + ex);
             return;
         }
 
