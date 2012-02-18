@@ -1,0 +1,2 @@
+Main-Class: MinecraftTerrainCompiler
+Class-Path: lib/snakeyaml-1.10.jar

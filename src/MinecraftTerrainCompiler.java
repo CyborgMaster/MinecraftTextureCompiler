@@ -15,12 +15,9 @@ public class MinecraftTerrainCompiler
 {
     //CONSTANTS
 
-    //The current directory.
-    private static final String workingDirectory = System.getProperty("user.dir");
-    //The extension to use.
-    private static final String EXTENSION = ".png";
-    //The name of the output file.
-    private static final String outputFile = "terrain";
+    //paths
+    private static final String texturesDefFile = "config\\Textures.yml";
+    private static final String splitOutPath = "splitTextures\\";
     //The width/height of tile.
     private static final int xTileSize = 64;
     private static final int yTileSize = 64;
@@ -128,8 +125,8 @@ public class MinecraftTerrainCompiler
 
     public static void main(String[] args)
     {
-        loadTextures("Textures.yml");
-        System.out.println("Total tiles mapped: " + Texture.totalTiles);
+        loadTextures(texturesDefFile);
+        //System.out.println("Total tiles mapped: " + Texture.totalTiles);
 
         if (args.length != 2) {
             System.err.println("Invalid command line arguments!");
@@ -280,6 +277,9 @@ public class MinecraftTerrainCompiler
     //NOTE: destructive operation on tilesIn because it nulls references
     //      to make sure no tile is used twice
     private static void writeTextures(BufferedImage[][] tiles) {
+        //make sure the out directory exists
+        new File(splitOutPath).mkdirs();
+
         for (Map.Entry<String, Texture> entry : textures.entrySet()) {
             String name = entry.getKey();
             Texture tex = entry.getValue();
@@ -308,7 +308,7 @@ public class MinecraftTerrainCompiler
             }
 
             try {
-                File outFile = new File("textures\\" + name + ".png");
+                File outFile = new File(splitOutPath + name + ".png");
                 ImageIO.write(texImage, "png", outFile);
             } catch(Exception ex) {
                 System.err.println("Error writing texture to file!");
