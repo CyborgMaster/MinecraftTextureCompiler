@@ -1,6 +1,570 @@
+furnace:
+  size: [2,2]
+  tiles:
+    - [[2,12],[0,0]]
+    - [[2,13],[0,1]]
+    - [[3,13],[1,0]]
+    - [[3,14],[1,1]]
+doorWood:
+  size: [2,1]
+  tiles:
+    - [[5,1],[0,0]]
+    - [[6,1],[1,0]]
+doorIron:
+  size: [2,1]
+  tiles:
+    - [[5,2],[0,0]]
+    - [[6,2],[1,0]]
+ironBars:
+  size: [1,1]
+  tiles:
+    - [[5,5],[0,0]]
+railPowered:
+  size: [2,1]
+  tiles:
+    - [[10,3],[0,0]]
+    - [[11,3],[1,0]]
+railDetector:
+  size: [1,1]
+  tiles:
+    - [[12,3],[0,0]]
+railNormal:
+  size: [2,1]
+  tiles:
+    - [[7,0],[0,0]]
+    - [[8,0],[1,0]]
+restoneWire:
+  size: [2,2]
+  tiles:
+    - [[10,4],[0,0]]
+    - [[10,5],[0,1]]
+    - [[11,4],[1,0]]
+    - [[11,5],[1,1]]
+redstoneTorch:
+  size: [2,1]
+  tiles:
+    - [[6,3],[0,0]]
+    - [[7,3],[1,0]]
+redstoneRepeater:
+  size: [2,1]
+  tiles:
+    - [[8,3],[0,0]]
+    - [[9,3],[1,0]]
+piston:
+  size: [2,3]
+  tiles:
+    - [[6,10],[0,0]]
+    - [[6,11],[0,1]]
+    - [[6,12],[0,2]]
+    - [[6,13],[1,0]]
+    - [[6,14],[1,1]]
+lever:
+  size: [1,1]
+  tiles:
+    - [[6,0],[0,0]]
+doorTrap:
+  size: [1,1]
+  tiles:
+    - [[5,4],[0,0]]
+tnt:
+  size: [3,1]
+  tiles:
+    - [[0,8],[0,0]]
+    - [[0,9],[1,0]]
+    - [[0,10],[2,0]]
+stoneSlab:
+  size: [2,1]
+  tiles:
+    - [[0,6],[0,0]]
+    - [[0,5],[1,0]]
+ladder:
+  size: [1,1]
+  tiles:
+    - [[5,3],[0,0]]
+torch:
+  size: [1,1]
+  tiles:
+    - [[5,0],[0,0]]
+dispenser:
+  size: [1,1]
+  tiles:
+    - [[2,14],[0,0]]
+cake:
+  size: [2,3]
+  tiles:
+    - [[7,9],[0,0]]
+    - [[7,10],[0,1]]
+    - [[7,11],[0,2]]
+    - [[7,12],[1,0]]
+    - [[8,12],[1,1]]
+bed:
+  size: [2,4]
+  tiles:
+    - [[8,6],[0,1]]
+    - [[8,7],[0,2]]
+    - [[9,5],[1,0]]
+    - [[9,6],[1,1]]
+    - [[9,7],[1,2]]
+    - [[9,8],[1,3]]
+bookshelf:
+  size: [1,1]
+  tiles:
+    - [[2,3],[0,0]]
+brewingStand:
+  size: [1,2]
+  tiles:
+    - [[9,12],[0,0]]
+    - [[9,13],[0,1]]
+cauldron:
+  size: [2,2]
+  tiles:
+    - [[8,10],[0,0]]
+    - [[8,11],[0,1]]
+    - [[9,10],[1,0]]
+    - [[9,11],[1,1]]
+chest:
+  size: [3,3]
+  tiles:
+    - [[1,9],[0,0]]
+    - [[1,10],[0,1]]
+    - [[1,11],[0,2]]
+    - [[2,9],[1,0]]
+    - [[2,10],[1,1]]
+    - [[3,9],[2,0]]
+    - [[3,10],[2,1]]
+enchantingTable:
+  size: [1,3]
+  tiles:
+    - [[10,6],[0,0]]
+    - [[11,6],[0,1]]
+    - [[11,7],[0,2]]
+jukebox:
+  size: [1,1]
+  tiles:
+    - [[4,11],[0,0]]
+craftingTable:
+  size: [1,3]
+  tiles:
+    - [[2,11],[0,0]]
+    - [[3,11],[0,1]]
+    - [[3,12],[0,2]]
+noteblock:
+  size: [1,1]
+  tiles:
+    - [[4,10],[0,0]]
+web:
+  size: [1,1]
+  tiles:
+    - [[0,11],[0,0]]
+breakAnimation:
+  size: [2,5]
+  tiles:
+    - [[15,0],[0,0]]
+    - [[15,1],[0,1]]
+    - [[15,2],[0,2]]
+    - [[15,3],[0,3]]
+    - [[15,4],[0,4]]
+    - [[15,5],[1,0]]
+    - [[15,6],[1,1]]
+    - [[15,7],[1,2]]
+    - [[15,8],[1,3]]
+    - [[15,9],[1,4]]
+sponge:
+  size: [1,1]
+  tiles:
+    - [[3,0],[0,0]]
+mobSpawner:
+  size: [1,1]
+  tiles:
+    - [[4,1],[0,0]]
+endPortal:
+  size: [1,3]
+  tiles:
+    - [[9,14],[0,0]]
+    - [[9,15],[0,1]]
+    - [[10,14],[0,2]]
+dragonEgg:
+  size: [1,1]
+  tiles:
+    - [[10,7],[0,0]]
+endStone:
+  size: [1,1]
+  tiles:
+    - [[10,15],[0,0]]
+glowstone:
+  size: [1,1]
+  tiles:
+    - [[6,9],[0,0]]
+netherBrick:
+  size: [1,1]
+  tiles:
+    - [[14,0],[0,0]]
+netherrack:
+  size: [1,1]
+  tiles:
+    - [[6,7],[0,0]]
+soulSand:
+  size: [1,1]
+  tiles:
+    - [[6,8],[0,0]]
+flowerRed:
+  size: [1,1]
+  tiles:
+    - [[0,12],[0,0]]
+flowerYellow:
+  size: [1,1]
+  tiles:
+    - [[0,13],[0,0]]
+saplingBirch:
+  size: [1,1]
+  tiles:
+    - [[4,15],[0,0]]
+saplingOak:
+  size: [1,1]
+  tiles:
+    - [[0,15],[0,0]]
+saplingPine:
+  size: [1,1]
+  tiles:
+    - [[3,15],[0,0]]
+woodOak:
+  size: [1,1]
+  tiles:
+    - [[1,4],[0,0]]
+woodBrich:
+  size: [1,1]
+  tiles:
+    - [[7,5],[0,0]]
+woodPine:
+  size: [1,1]
+  tiles:
+    - [[7,4],[0,0]]
+woodTop:
+  size: [1,1]
+  tiles:
+    - [[1,5],[0,0]]
+leavesNormal:
+  size: [2,1]
+  tiles:
+    - [[3,4],[0,0]]
+    - [[3,5],[1,0]]
+leavesPine:
+  size: [2,1]
+  tiles:
+    - [[8,4],[0,0]]
+    - [[8,5],[1,0]]
+wheat:
+  size: [1,8]
+  tiles:
+    - [[5,8],[0,0]]
+    - [[5,9],[0,1]]
+    - [[5,10],[0,2]]
+    - [[5,11],[0,3]]
+    - [[5,12],[0,4]]
+    - [[5,13],[0,5]]
+    - [[5,14],[0,6]]
+    - [[5,15],[0,7]]
+farmland:
+  size: [2,1]
+  tiles:
+    - [[5,6],[0,0]]
+    - [[5,7],[1,0]]
+reeds:
+  size: [1,1]
+  tiles:
+    - [[4,9],[0,0]]
+cactus:
+  size: [3,1]
+  tiles:
+    - [[4,5],[0,0]]
+    - [[4,6],[1,0]]
+    - [[4,7],[2,0]]
+shrub:
+  size: [1,1]
+  tiles:
+    - [[3,8],[0,0]]
+deadShrub:
+  size: [1,1]
+  tiles:
+    - [[3,7],[0,0]]
+tallGrass:
+  size: [1,1]
+  tiles:
+    - [[2,7],[0,0]]
+lillyPad:
+  size: [1,1]
+  tiles:
+    - [[4,12],[0,0]]
+mushroomRed:
+  size: [1,1]
+  tiles:
+    - [[1,12],[0,0]]
+mushroomBrown:
+  size: [1,1]
+  tiles:
+    - [[1,13],[0,0]]
+netherWart:
+  size: [1,3]
+  tiles:
+    - [[14,2],[0,0]]
+    - [[14,3],[0,1]]
+    - [[14,4],[0,2]]
+mushroomGiantBrown:
+  size: [1,1]
+  tiles:
+    - [[7,14],[0,0]]
+mushroomGiantRed:
+  size: [1,1]
+  tiles:
+    - [[7,13],[0,0]]
+mushroomGiantStem:
+  size: [1,1]
+  tiles:
+    - [[8,13],[0,0]]
+mushroomGiantInside:
+  size: [1,1]
+  tiles:
+    - [[8,14],[0,0]]
+vines:
+  size: [1,1]
+  tiles:
+    - [[8,15],[0,0]]
+melonStems:
+  size: [1,2]
+  tiles:
+    - [[6,15],[0,0]]
+    - [[7,15],[0,1]]
+melon:
+  size: [1,2]
+  tiles:
+    - [[8,8],[0,0]]
+    - [[8,9],[0,1]]
+pumpkin:
+  size: [2,2]
+  tiles:
+    - [[6,6],[0,0]]
+    - [[7,6],[0,1]]
+    - [[7,7],[1,0]]
+    - [[7,8],[1,1]]
+woodPlanks:
+  size: [1,1]
+  tiles:
+    - [[0,4],[0,0]]
+glass:
+  size: [1,1]
+  tiles:
+    - [[3,1],[0,0]]
+glassPane:
+  size: [1,1]
+  tiles:
+    - [[9,4],[0,0]]
+stoneBrick:
+  size: [1,1]
+  tiles:
+    - [[3,6],[0,0]]
+stoneBrickCracked:
+  size: [1,1]
+  tiles:
+    - [[6,5],[0,0]]
+stoneBrickMossy:
+  size: [1,1]
+  tiles:
+    - [[6,4],[0,0]]
+oreBlockDiamond:
+  size: [1,1]
+  tiles:
+    - [[1,8],[0,0]]
+oreBlockIron:
+  size: [1,1]
+  tiles:
+    - [[1,6],[0,0]]
+oreBlockGold:
+  size: [1,1]
+  tiles:
+    - [[1,7],[0,0]]
+oreBlockLapis:
+  size: [1,1]
+  tiles:
+    - [[9,0],[0,0]]
+brick:
+  size: [1,1]
+  tiles:
+    - [[0,7],[0,0]]
+water:
+  size: [2,3]
+  tiles:
+    - [[12,13],[0,0]]
+    - [[12,14],[0,1]]
+    - [[12,15],[0,2]]
+    - [[13,14],[1,1]]
+    - [[13,15],[1,2]]
+lava:
+  size: [2,3]
+  tiles:
+    - [[14,13],[0,0]]
+    - [[14,14],[0,1]]
+    - [[14,15],[0,2]]
+    - [[15,14],[1,1]]
+    - [[15,15],[1,2]]
 grass:
   size: [1,1]
   tiles:
     - [[0,0],[0,0]]
-        
-    
+dirt:
+  size: [1,1]
+  tiles:
+    - [[0,2],[0,0]]
+dirtSide:
+  size: [1,1]
+  tiles:
+    - [[0,3],[0,0]]
+grassSide:
+  size: [1,1]
+  tiles:
+    - [[2,6],[0,0]]
+snow:
+  size: [1,1]
+  tiles:
+    - [[4,2],[0,0]]
+snowSide:
+  size: [1,1]
+  tiles:
+    - [[4,4],[0,0]]
+ice:
+  size: [1,1]
+  tiles:
+    - [[4,3],[0,0]]
+stone:
+  size: [1,1]
+  tiles:
+    - [[0,1],[0,0]]
+oreCoal:
+  size: [1,1]
+  tiles:
+    - [[2,2],[0,0]]
+oreIron:
+  size: [1,1]
+  tiles:
+    - [[2,1],[0,0]]
+oreGold:
+  size: [1,1]
+  tiles:
+    - [[2,0],[0,0]]
+oreDiamond:
+  size: [1,1]
+  tiles:
+    - [[3,2],[0,0]]
+oreRedstone:
+  size: [1,1]
+  tiles:
+    - [[3,3],[0,0]]
+oreLapis:
+  size: [1,1]
+  tiles:
+    - [[10,0],[0,0]]
+cobblestone:
+  size: [1,1]
+  tiles:
+    - [[1,0],[0,0]]
+cobblestoneMossy:
+  size: [1,1]
+  tiles:
+    - [[2,4],[0,0]]
+gravel:
+  size: [1,1]
+  tiles:
+    - [[1,3],[0,0]]
+sand:
+  size: [1,1]
+  tiles:
+    - [[1,2],[0,0]]
+sandstone:
+  size: [3,1]
+  tiles:
+    - [[11,0],[0,0]]
+    - [[12,0],[1,0]]
+    - [[13,0],[2,0]]
+clay:
+  size: [1,1]
+  tiles:
+    - [[4,8],[0,0]]
+obsidian:
+  size: [1,1]
+  tiles:
+    - [[2,5],[0,0]]
+bedrock:
+  size: [1,1]
+  tiles:
+    - [[1,1],[0,0]]
+mycelium:
+  size: [1,1]
+  tiles:
+    - [[4,14],[0,0]]
+myceliumSide:
+  size: [1,1]
+  tiles:
+    - [[4,13],[0,0]]
+woolWhite:
+  size: [1,1]
+  tiles:
+    - [[4,0],[0,0]]
+woolBlack:
+  size: [1,1]
+  tiles:
+    - [[7,1],[0,0]]
+woolGrey:
+  size: [1,1]
+  tiles:
+    - [[7,2],[0,0]]
+woolRed:
+  size: [1,1]
+  tiles:
+    - [[8,1],[0,0]]
+woolPink:
+  size: [1,1]
+  tiles:
+    - [[8,2],[0,0]]
+woolGreen:
+  size: [1,1]
+  tiles:
+    - [[9,1],[0,0]]
+woolGreenLime:
+  size: [1,1]
+  tiles:
+    - [[9,2],[0,0]]
+woolBrown:
+  size: [1,1]
+  tiles:
+    - [[10,1],[0,0]]
+woolYellow:
+  size: [1,1]
+  tiles:
+    - [[10,2],[0,0]]
+woolBlue:
+  size: [1,1]
+  tiles:
+    - [[11,1],[0,0]]
+woolBlueLight:
+  size: [1,1]
+  tiles:
+    - [[11,2],[0,0]]
+woolPurple:
+  size: [1,1]
+  tiles:
+    - [[12,1],[0,0]]
+woolMagenta:
+  size: [1,1]
+  tiles:
+    - [[12,2],[0,0]]
+woolCyan:
+  size: [1,1]
+  tiles:
+    - [[13,1],[0,0]]
+woolOrange:
+  size: [1,1]
+  tiles:
+    - [[13,2],[0,0]]
+woolGreyLight:
+  size: [1,1]
+  tiles:
+    - [[14,1],[0,0]]
