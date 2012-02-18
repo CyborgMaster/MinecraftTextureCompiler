@@ -14,27 +14,28 @@ import org.yaml.snakeyaml.Yaml;
 public class MinecraftTerrainCompiler
 {
     //CONSTANTS
-    
+
     //The current directory.
     private static final String workingDirectory = System.getProperty("user.dir");
     //The extension to use.
     private static final String EXTENSION = ".png";
     //The name of the output file.
     private static final String outputFile = "terrain";
-    //The default width of tile pieces.
+    //The width/height of tile.
     private static final int xTileSize = 64;
-    //The default height of tile pieces.
     private static final int yTileSize = 64;
-    //The number of tiles in the x/y axis
-    private static final int xTiles = 16;
-    private static final int yTiles = 16;
+    //The number of tiles in the each row/column
+    private static final int tileRows = 16;
+    private static final int tileColumns = 16;
     //The default height of the base and output files.
-    private static final int xTotalSize = xTiles * xTileSize;
+    private static final int xTotalSize = tileColumns * xTileSize;
     //The default width of the base and output files.
-    private static final int yTotalSize = yTiles * yTileSize;
+    private static final int yTotalSize = tileRows * yTileSize;
 
     //GLOBALS
-    private static final String[][] tileNames = new String[yTiles][xTiles];
+    private static final String[][] tileNames =
+        new String[tileRows][tileColumns];
+
     //holds the map between the terrain.png to individual texture files
     private static final HashMap<String,Texture> textures =
         new HashMap<String,Texture>();
@@ -42,12 +43,12 @@ public class MinecraftTerrainCompiler
 
     //HELPER CLASSES
     private static class Coord {
-        public int x;
-        public int y;
+        public int row;
+        public int col;
 
-        public Coord(int x, int y) {
-            this.x = x;
-            this.y = y;
+        public Coord(int row, int col) {
+            this.row = row;
+            this.col = col;
         }
     }
 
@@ -65,49 +66,53 @@ public class MinecraftTerrainCompiler
         public Coord size;
         public ArrayList<TileMap> maps;
 
-        public Texture(Coord size, ArrayList<TileMap> maps) {
+        public static int totalTiles = 0;
+
+        public Texture(Coord size, ArrayList<TileMap> maps) throws Exception {
             this.size = size;
             this.maps = maps;
 
             //basic checking for right number of tile maps
-            if (totalTiles() - maps.size() > Math.min(size.x, size.y) - 1) {
-                System.err.println("Error in texture definition! Not enough tile " +
-                                   "maps");
-                System.exit(1);
+            if (maps.size() > totalTiles()) {
+                System.err.println("Error in texture definition: Too many " +
+                                   "tile maps!");
+                throw(new Exception());
             }
+            /*
+            if (totalTiles() - maps.size() > Math.max(size.row, size.col) - 1) {
+                System.err.println("Error in texture definition: Not enough " +
+                                   "tile maps!");
+                throw(new Exception());
+            }
+            */
 
             //Check that all coords are in range for terrain and the texture
             for (TileMap map : maps) {
-                if (map.terrain.x < 0 || map.terrain.x > xTiles - 1) {
-                    System.err.println("Error in texture definition! Tile map " +
-                                       "coordinates out of range maps");
-                    System.exit(1);
+                if (map.terrain.row < 0 || map.terrain.row > tileRows - 1 ||
+                    map.terrain.col < 0 || map.terrain.col > tileColumns - 1 ||
+                    map.texture.row < 0 || map.texture.row > size.row - 1 ||
+                    map.texture.col < 0 || map.texture.col > size.col - 1) {
+
+                    System.err.println("Error in texture definition: Tile " +
+                                       "map coordinates out of range!");
+                    throw(new Exception());
                 }
+
+                totalTiles++;
             }
-                
+
         }
 
-        /*
-          public Texture(Coord size, TileMap... maps) {
-          ArrayList<TileMap> mapList;
-          for (TileMap map : maps) {
-          mapList.add(map);
-          }
-
-          this(size, mapList);
-          }
-        */
-    
         public int totalTiles() {
-            return size.x * size.y;
+            return size.row * size.col;
         }
     }
 
     public static void main(String[] args)
     {
         loadTextures("Textures.yml");
-        System.exit(0);
-        
+        System.out.println("Total tiles mapped: " + Texture.totalTiles);
+
         if (args.length == 0) {
             try {
                 File outFile = new File("merged.png");
@@ -137,12 +142,13 @@ public class MinecraftTerrainCompiler
             return;
         }
 
-        splitImage(inputImage);
-
+        BufferedImage[][] tiles = splitImage(inputImage);
+        writeTextures(tiles);
         return;
 
     }
 
+    @SuppressWarnings("unchecked")
     private static void loadTextures(String configFile) {
         try {
             InputStream input = new FileInputStream(new File(configFile));
@@ -158,12 +164,12 @@ public class MinecraftTerrainCompiler
                 List<Object> tileList = (List<Object>)textureMap.get("tiles");
 
                 ArrayList<TileMap> maps = new ArrayList<TileMap>();
-                
+
                 for (Object tileMap : tileList) {
                     List<Object> coords = (List<Object>)tileMap;
                     List<Integer> terCoordList = (List<Integer>)coords.get(0);
                     List<Integer> texCoordList = (List<Integer>)coords.get(1);
-                    
+
                     Coord terCoord = new Coord(terCoordList.get(0),
                                                terCoordList.get(1));
                     Coord texCoord = new Coord(texCoordList.get(0),
@@ -172,28 +178,56 @@ public class MinecraftTerrainCompiler
                     maps.add(new TileMap(terCoord, texCoord));
                 }
 
-                textures.put(textureName, new Texture(size, maps));
+                try {
+                    textures.put(textureName, new Texture(size, maps));
+                } catch (Exception ex) {
+                    System.err.format("Error reading texture: %s!\n",
+                                      textureName);
+                    System.exit(1);
+                }
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Error loading config file: "  + configFile +
                                " - " + ex);
+            System.exit(1);
         }
     }
 
 
-    private static void splitImage(BufferedImage inImage) {
-        //split the texture
-        for (int i = 0; i < tileNames.length; i++) {
-            for (int j = 0; j < tileNames[i].length; j++) {
-                BufferedImage outImage = inImage.getSubimage(
-                    j * xTileSize, i * yTileSize, 64, 64);
+    private static BufferedImage[][] splitImage(BufferedImage inImage) {
+        //split the texture into tiles
+        BufferedImage[][] tiles = new BufferedImage[tileRows][tileColumns];
+
+        for (int row = 0; row < tileRows; row++) {
+            for (int col = 0; col < tileColumns; col++) {
+                tiles[row][col] = inImage.getSubimage(
+                    col * xTileSize, row * yTileSize, 64, 64);
+            }
+        }
+
+        return tiles;
+    }
+
+    private static void writeTextures(BufferedImage[][] tiles) {
+        for (Map.Entry<String, Texture> entry : textures.entrySet()) {
+            String name = entry.getKey();
+            Texture tex = entry.getValue();
+            BufferedImage texImage = new  BufferedImage(
+               tex.size.col * xTileSize, tex.size.row * yTileSize,
+               BufferedImage.TYPE_INT_ARGB);
+            Graphics g = texImage.createGraphics();
+
+            for (TileMap map : tex.maps) {
+                g.drawImage(
+                    tiles[map.terrain.row][map.terrain.col],
+                    map.texture.col * xTileSize,
+                    map.texture.row * yTileSize, null);
 
                 try {
-                    File outFile = new File("temp\\" + tileNames[i][j] +
-                                            ".png");
-                    ImageIO.write(outImage, "png", outFile);
+                    File outFile = new File("textures\\" + name + ".png");
+                    ImageIO.write(texImage, "png", outFile);
                 } catch(Exception ex) {
-                    System.err.println("Error writing tile to file!");
+                    System.err.println("Error writing texture to file!");
                     return;
                 }
             }
@@ -227,40 +261,5 @@ public class MinecraftTerrainCompiler
         }
 
         graphics.drawImage(tile, xLoc * xTileSize, yLoc * yTileSize, null);
-    }
-
-    public static void writeTexture()
-    {
-        /*
-        try
-        {
-            boolean newDirectory = (new File(workingDirectory + "\\Compiled Textures")).mkdir();
-        }
-        catch(SecurityException exceptionSE)
-        {
-            File textureFile = new File(workingDirectory + outputFile + EXTENSION);
-            try
-            {
-                ImageIO.write(base, "png", textureFile);
-            }
-            catch(IOException exceptionIO)
-            {
-                System.err.println("Critical failure attempting to write to file!");
-                return;
-            }
-            return;
-        }
-        File textureFile = new File(workingDirectory + "\\Compiled Textures\\" + outputFile + EXTENSION);
-        try
-        {
-            ImageIO.write(base, "png", textureFile);
-        }
-        catch(IOException exceptionIO)
-        {
-            System.err.println("Critical failure attempting to write to file!");
-            return;
-        }
-        return;
-        */
     }
 }
