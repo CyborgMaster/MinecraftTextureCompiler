@@ -1,0 +1,17 @@
+inherit: ..\sortex\default.yml
+
+redstoneRepeater: redstoneRepeater.png
+bedrock: bedrock.png
+cobblestone: cobblestone.png
+cobblestoneMossy: cobblestoneMossy.png
+sand: sand.png
+sandstone: sandstone.png
+obsidian: obsidian.png
+oreCoal: oreCoal.png
+oreIron: oreIron.png
+oreGold: oreGold.png
+oreDiamond: oreDiamond.png
+oreRedstone: oreRedstone.png
+oreLapis: oreLapis.png
+stone: stone.png
+stoneSlab: stoneSlab.png
