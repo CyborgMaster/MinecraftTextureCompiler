@@ -114,13 +114,14 @@ public class MinecraftTerrainCompiler
         System.out.println("Total tiles mapped: " + Texture.totalTiles);
 
         if (args.length == 0) {
+            BufferedImage outImage = mergeImage();
             try {
                 File outFile = new File("merged.png");
-                BufferedImage outImage = mergeImage();
                 ImageIO.write(outImage, "png", outFile);
                 return;
             } catch(Exception ex) {
-                System.err.println("Error writing terrain texture to file!");
+                System.err.println("Error writing terrain texture to file!"
+                                   + ex);
                 return;
             }
         }
@@ -195,13 +196,19 @@ public class MinecraftTerrainCompiler
 
 
     private static BufferedImage[][] splitImage(BufferedImage inImage) {
-        //split the texture into tiles
-        BufferedImage[][] tiles = new BufferedImage[tileRows][tileColumns];
+        //calculate the number of tiles
+        int rows = inImage.getHeight() / yTileSize;
+        int cols = inImage.getWidth() / xTileSize;
 
-        for (int row = 0; row < tileRows; row++) {
-            for (int col = 0; col < tileColumns; col++) {
+        System.out.format("rows:%d, cols:%d\n", rows, cols);
+
+        //split the texture into tiles
+        BufferedImage[][] tiles = new BufferedImage[rows][cols];
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 tiles[row][col] = inImage.getSubimage(
-                    col * xTileSize, row * yTileSize, 64, 64);
+                    col * xTileSize, row * yTileSize, xTileSize, yTileSize);
             }
         }
 
@@ -239,27 +246,33 @@ public class MinecraftTerrainCompiler
             xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
         Graphics g = outImage.createGraphics();
 
-        for (int i = 0; i < tileNames.length; i++) {
-            for (int j = 0; j < tileNames[i].length; j++) {
-                placeTile(g, "temp\\" + tileNames[i][j] + ".png", j, i);
+        for (Map.Entry<String, Texture> entry : textures.entrySet()) {
+            String name = entry.getKey();
+            Texture tex = entry.getValue();
+
+            BufferedImage texImage;
+            String texPath = "textures\\" + name + ".png";
+
+            try {
+                File texFile = new File(texPath);
+                texImage = ImageIO.read(texFile);
+            } catch(IOException exception) {
+                System.err.println("Error reading texture: " + texPath);
+                return null;
+            }
+
+            System.out.println("reading texutre: " + name);
+            BufferedImage[][] texTiles = splitImage(texImage);
+
+            for (TileMap map : tex.maps) {
+                g.drawImage(
+                    texTiles[map.texture.row][map.texture.col],
+                    map.terrain.col * xTileSize,
+                    map.terrain.row * yTileSize, null);
+
             }
         }
 
         return outImage;
-    }
-
-    public static void placeTile(Graphics graphics, String tilePath,
-                                 int xLoc, int yLoc) {
-        BufferedImage tile;
-
-        try {
-            File tileFile = new File(tilePath);
-            tile = ImageIO.read(tileFile);
-        } catch(IOException exception) {
-            System.err.println("Error reading tile: " + tilePath);
-            return;
-        }
-
-        graphics.drawImage(tile, xLoc * xTileSize, yLoc * yTileSize, null);
     }
 }
