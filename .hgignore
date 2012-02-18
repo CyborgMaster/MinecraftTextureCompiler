@@ -1,5 +1,4 @@
 syntax: glob
-temp/*
-*.png
 *.class
 *.jar
+splitTextures/*

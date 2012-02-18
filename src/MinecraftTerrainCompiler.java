@@ -120,7 +120,11 @@ public class MinecraftTerrainCompiler
     }
     private static String path(String fullPath) {
         int sep = fullPath.lastIndexOf(pathSeparator);
-        return fullPath.substring(0, sep);
+        if (sep < 0) {
+            return ".";
+        } else {
+            return fullPath.substring(0, sep);
+        }
     }
 
     public static void main(String[] args)
