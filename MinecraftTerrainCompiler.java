@@ -33,13 +33,12 @@ public class MinecraftTerrainCompiler
     private static final int yTotalSize = tileRows * yTileSize;
 
     //GLOBALS
-    private static final String[][] tileNames =
-        new String[tileRows][tileColumns];
-
     //holds the map between the terrain.png to individual texture files
     private static final HashMap<String,Texture> textures =
         new HashMap<String,Texture>();
-
+    //holds the mapping between textures and files to load when merging
+    private static final HashMap<String,String> textureFiles =
+        new HashMap<String,String>();
 
     //HELPER CLASSES
     private static class Coord {
@@ -108,45 +107,74 @@ public class MinecraftTerrainCompiler
         }
     }
 
+    //FUNCTIONS
+    //manipulate file paths
+    private static final String extensionSeparator = ".";
+    private static final String pathSeparator = "\\";
+
+    private static String extension(String fullPath) {
+        int dot = fullPath.lastIndexOf(extensionSeparator);
+        return fullPath.substring(dot + 1);
+    }
+    private static String filename(String fullPath) { // gets filename without extension
+        int dot = fullPath.lastIndexOf(extensionSeparator);
+        int sep = fullPath.lastIndexOf(pathSeparator);
+        return fullPath.substring(sep + 1, dot);
+    }
+    private static String path(String fullPath) {
+        int sep = fullPath.lastIndexOf(pathSeparator);
+        return fullPath.substring(0, sep);
+    }
+
     public static void main(String[] args)
     {
         loadTextures("Textures.yml");
         System.out.println("Total tiles mapped: " + Texture.totalTiles);
 
-        if (args.length == 0) {
+        if (args.length != 2) {
+            System.err.println("Invalid command line arguments!");
+            System.exit(1);
+        }
+
+        if (args[0].equals("-m")) {
+            //merge textures to create terrain.png
+            loadMergeConfig(args[1]);
+
             BufferedImage outImage = mergeImage();
+            if (outImage == null) return;
             try {
-                File outFile = new File("merged.png");
+                File outFile = new File("terrain.png");
                 ImageIO.write(outImage, "png", outFile);
-                return;
             } catch(Exception ex) {
                 System.err.println("Error writing terrain texture to file!"
                                    + ex);
                 return;
             }
-        }
+        } else if (args[0].equals("-s")) {
+            //split a terrain file into textures
+            BufferedImage inputImage;
+            try {
+                File inputFile = new File(args[1]);
+                inputImage = ImageIO.read(inputFile);
+            } catch(Exception ex) {
+                System.err.println("Error reading input file: " + ex);
+                return;
+            }
 
-        BufferedImage inputImage;
+            if (inputImage.getWidth() != xTotalSize ||
+                inputImage.getHeight() != yTotalSize) {
+                System.err.println("Input image wrong size, should be: " +
+                                   xTotalSize + " x " + yTotalSize);
+                return;
+            }
 
-        try {
-            File inputFile = new File(args[0]);
-            inputImage = ImageIO.read(inputFile);
-        } catch(Exception ex) {
-            System.err.println("Error reading input file: " + ex);
+            BufferedImage[][] tiles = splitImage(inputImage);
+            writeTextures(tiles);
             return;
+        } else {
+            System.err.println("Invalid command line arguments!");
+            System.exit(1);
         }
-
-        if (inputImage.getWidth() != xTotalSize ||
-            inputImage.getHeight() != yTotalSize) {
-            System.err.println("Input image wrong size, should be: " +
-                               xTotalSize + " x " + yTotalSize);
-            return;
-        }
-
-        BufferedImage[][] tiles = splitImage(inputImage);
-        writeTextures(tiles);
-        return;
-
     }
 
     @SuppressWarnings("unchecked")
@@ -194,13 +222,47 @@ public class MinecraftTerrainCompiler
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private static void loadMergeConfig(String configFile) {
+        String configFileDirectory = path(configFile);
+
+        try {
+            InputStream input = new FileInputStream(new File(configFile));
+            Yaml yaml = new Yaml();
+            Map<String, String> data = (Map<String, String>)yaml.load(input);
+
+            //handle inheritance
+            if (data.containsKey("inherit")) {
+                //load the inherit file first
+                loadMergeConfig(configFileDirectory + pathSeparator +
+                                data.get("inherit"));
+                data.remove("inherit");
+            }
+
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                String textureName = entry.getKey();
+                String fileName = entry.getValue();
+
+                if (!textures.containsKey(textureName)) {
+                    System.err.format("Invalid texture name '%s' in config " +
+                                      "file '%s'!\n", textureName, configFile);
+                    System.exit(1);
+                }
+
+                textureFiles.put(textureName, configFileDirectory +
+                                 pathSeparator + fileName);
+            }
+        } catch (Exception ex) {
+            System.err.println("Error loading config file: "  + configFile +
+                               " - " + ex);
+            System.exit(1);
+        }
+    }
 
     private static BufferedImage[][] splitImage(BufferedImage inImage) {
         //calculate the number of tiles
         int rows = inImage.getHeight() / yTileSize;
         int cols = inImage.getWidth() / xTileSize;
-
-        System.out.format("rows:%d, cols:%d\n", rows, cols);
 
         //split the texture into tiles
         BufferedImage[][] tiles = new BufferedImage[rows][cols];
@@ -215,61 +277,89 @@ public class MinecraftTerrainCompiler
         return tiles;
     }
 
+    //NOTE: destructive operation on tilesIn because it nulls references
+    //      to make sure no tile is used twice
     private static void writeTextures(BufferedImage[][] tiles) {
         for (Map.Entry<String, Texture> entry : textures.entrySet()) {
             String name = entry.getKey();
             Texture tex = entry.getValue();
+
             BufferedImage texImage = new  BufferedImage(
                tex.size.col * xTileSize, tex.size.row * yTileSize,
                BufferedImage.TYPE_INT_ARGB);
             Graphics g = texImage.createGraphics();
 
             for (TileMap map : tex.maps) {
+                if (tiles[map.terrain.row][map.terrain.col] == null) {
+                    System.err.format(
+                        "The same tile in terrain.png was used twice while " +
+                        "writing texture \"%s\"!\n", name);
+                    System.exit(1);
+                }
+
                 g.drawImage(
                     tiles[map.terrain.row][map.terrain.col],
                     map.texture.col * xTileSize,
                     map.texture.row * yTileSize, null);
 
-                try {
-                    File outFile = new File("textures\\" + name + ".png");
-                    ImageIO.write(texImage, "png", outFile);
-                } catch(Exception ex) {
-                    System.err.println("Error writing texture to file!");
-                    return;
-                }
+                //null the reference to the tile so it can't be used more than
+                //once
+                tiles[map.terrain.row][map.terrain.col] = null;
+            }
+
+            try {
+                File outFile = new File("textures\\" + name + ".png");
+                ImageIO.write(texImage, "png", outFile);
+            } catch(Exception ex) {
+                System.err.println("Error writing texture to file!");
+                return;
             }
         }
     }
 
     private static BufferedImage mergeImage() {
-        BufferedImage outImage = new  BufferedImage(
-            xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = outImage.createGraphics();
+        //gather all the tiles from the different textures
+        BufferedImage[][] tiles = new BufferedImage[tileRows][tileColumns];
 
-        for (Map.Entry<String, Texture> entry : textures.entrySet()) {
-            String name = entry.getKey();
-            Texture tex = entry.getValue();
+        for (Map.Entry<String, String> entry : textureFiles.entrySet()) {
+            String textureName = entry.getKey();
+            String filePath = entry.getValue();
+            Texture tex = textures.get(textureName);
 
             BufferedImage texImage;
-            String texPath = "textures\\" + name + ".png";
 
             try {
-                File texFile = new File(texPath);
+                File texFile = new File(filePath);
                 texImage = ImageIO.read(texFile);
             } catch(IOException exception) {
-                System.err.println("Error reading texture: " + texPath);
+                System.err.println("Error reading texture: " + filePath);
                 return null;
             }
 
-            System.out.println("reading texutre: " + name);
             BufferedImage[][] texTiles = splitImage(texImage);
 
             for (TileMap map : tex.maps) {
-                g.drawImage(
-                    texTiles[map.texture.row][map.texture.col],
-                    map.terrain.col * xTileSize,
-                    map.terrain.row * yTileSize, null);
+                //make sure we don't overwrite a tile
+                if (tiles[map.terrain.row][map.terrain.col] != null) {
+                    System.err.format(
+                        "The same tile in terrain.png was written twice " +
+                        "while processing texture \"%s\"!\n", textureName);
+                    System.exit(1);
+                }
 
+                tiles[map.terrain.row][map.terrain.col] =
+                    texTiles[map.texture.row][map.texture.col];
+            }
+        }
+
+        //draw all the tiles to a new image
+        BufferedImage outImage = new  BufferedImage(
+            xTotalSize, yTotalSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = outImage.createGraphics();
+        for (int row = 0; row < tileRows; row++) {
+            for (int col = 0; col < tileColumns; col++) {
+                g.drawImage(tiles[row][col], col * xTileSize,
+                            row * yTileSize, null);
             }
         }
 
