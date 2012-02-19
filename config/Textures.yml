@@ -291,7 +291,7 @@ tallGrass:
   size: [1,1]
   tiles:
     - [[2,7],[0,0]]
-lillyPad:
+lilyPad:
   size: [1,1]
   tiles:
     - [[4,12],[0,0]]
