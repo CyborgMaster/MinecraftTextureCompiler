@@ -2,3 +2,22 @@ inherit: dad\dad.yml
 
 enchantingTable: sortexFan\enchantingTable.png
 endPortal: sortexFan\endPortal.png
+endStone: sortexFan\endStone.png
+mycelium: sortexFan\mycelium.png
+myceliumSide: sortexFan\myceliumSide.png
+grass: sortexFan\grassDesat.png
+grassSide: sortexFan\grassSideDesat.png
+mushroomGiantRed: sortexFan\mushroomGiantRed.png
+mushroomGiantBrown: sortexFan\mushroomGiantBrown.png
+mushroomGiantStem: sortexFan\mushroomGiantStem.png
+lilyPad: sortexFan\lilyPad.png
+brewingStand: sortexFan\brewingStand.png
+dragonEgg: sortexFan\dragonEgg.png
+melonStems: sortexFan\melonStems.png
+vines: sortexFan\vinesSkinny.png
+netherBrick: sortexFan\netherBrick.png
+redstoneRepeater: sortexFan\redstoneRepeaterArrows.png
+netherWart: sortexFan\netherWart.png
+pumpkin: sortexFan\pumpkinNoFace.png
+obsidian: sortexFan\obsidian.png
+sponge: sortexFan\sponge.png
