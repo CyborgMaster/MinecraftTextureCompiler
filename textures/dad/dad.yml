@@ -9,7 +9,7 @@ sandstone: sandstone.png
 obsidian: obsidian.png
 oreCoal: oreCoal.png
 oreIron: oreIron.png
-oreGold: oreGold.png
+oreGold: [stone.png, oreGold.png]
 oreDiamond: oreDiamond.png
 oreRedstone: oreRedstone.png
 oreLapis: oreLapis.png
