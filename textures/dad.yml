@@ -1,0 +1,5 @@
+inherit: dad\dad.yml
+
+pumpkin: sortexFan\pumpkinNoFace.png
+melonStems: sortexFan\melonStems.png
+vines: sortexFan\vinesSkinny.png
