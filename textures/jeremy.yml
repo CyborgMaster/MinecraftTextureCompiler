@@ -1,5 +1,6 @@
 inherit: dad\dad.yml
 
+snow: albion\snow.png
 enchantingTable: sortexFan\enchantingTable.png
 endPortal: sortexFan\endPortal.png
 endStone: sortexFan\endStone.png
