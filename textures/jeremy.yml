@@ -1,6 +1,5 @@
 inherit: dad\dad.yml
 
-oreDiamond: [dad\sand.png, dad\oreDiamondOverlay.png]
 enchantingTable: sortexFan\enchantingTable.png
 endPortal: sortexFan\endPortal.png
 endStone: sortexFan\endStone.png
