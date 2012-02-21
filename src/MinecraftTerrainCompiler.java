@@ -34,8 +34,8 @@ public class MinecraftTerrainCompiler
     private static final HashMap<String,Texture> textures =
         new HashMap<String,Texture>();
     //holds the mapping between textures and files to load when merging
-    private static final HashMap<String,String> textureFiles =
-        new HashMap<String,String>();
+    private static final HashMap<String,ArrayList<String>> textureFiles =
+        new HashMap<String,ArrayList<String>>();
 
     //HELPER CLASSES
     private static class Coord {
@@ -230,19 +230,19 @@ public class MinecraftTerrainCompiler
         try {
             InputStream input = new FileInputStream(new File(configFile));
             Yaml yaml = new Yaml();
-            Map<String, String> data = (Map<String, String>)yaml.load(input);
+            Map<String,Object> data = (Map<String,Object>)yaml.load(input);
 
             //handle inheritance
             if (data.containsKey("inherit")) {
                 //load the inherit file first
                 loadMergeConfig(configFileDirectory + pathSeparator +
-                                data.get("inherit"));
+                                (String)data.get("inherit"));
                 data.remove("inherit");
             }
 
-            for (Map.Entry<String, String> entry : data.entrySet()) {
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
                 String textureName = entry.getKey();
-                String fileName = entry.getValue();
+                Object file = entry.getValue();
 
                 if (!textures.containsKey(textureName)) {
                     System.err.format("Invalid texture name '%s' in config " +
@@ -250,8 +250,22 @@ public class MinecraftTerrainCompiler
                     System.exit(1);
                 }
 
-                textureFiles.put(textureName, configFileDirectory +
-                                 pathSeparator + fileName);
+                ArrayList<String> files = new ArrayList<String>();
+
+                if (file instanceof List) {
+                    for (String fileName : (List<String>)file) {
+                        files.add(configFileDirectory +
+                                  pathSeparator + fileName);
+                    }
+                } else if (file instanceof String) { //single file only
+                    files.add(configFileDirectory +
+                              pathSeparator + (String)file);
+                } else {
+                    System.err.format("Invalid texture config '%s' in config " +
+                                      "file '%s'!\n", textureName, configFile);
+                }
+
+                textureFiles.put(textureName, files);
             }
         } catch (Exception ex) {
             System.err.println("Error loading config file: "  + configFile +
@@ -325,19 +339,27 @@ public class MinecraftTerrainCompiler
         //gather all the tiles from the different textures
         BufferedImage[][] tiles = new BufferedImage[tileRows][tileColumns];
 
-        for (Map.Entry<String, String> entry : textureFiles.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry :
+                 textureFiles.entrySet()) {
             String textureName = entry.getKey();
-            String filePath = entry.getValue();
+            ArrayList<String> filePaths = entry.getValue();
             Texture tex = textures.get(textureName);
 
-            BufferedImage texImage;
+            //merge all the images in the texture list (allows for overlays)
+            BufferedImage texImage = new  BufferedImage(
+                tex.size.col * xTileSize, tex.size.row * yTileSize,
+                BufferedImage.TYPE_INT_ARGB);
+            Graphics g = texImage.createGraphics();
 
-            try {
-                File texFile = new File(filePath);
-                texImage = ImageIO.read(texFile);
-            } catch(IOException exception) {
-                System.err.println("Error reading texture: " + filePath);
-                return null;
+            for (String filePath : filePaths) {
+                try {
+                    File texFile = new File(filePath);
+                    BufferedImage texImageLayer = ImageIO.read(texFile);
+                    g.drawImage(texImageLayer, 0, 0, null);
+                } catch(IOException exception) {
+                    System.err.println("Error reading texture: " + filePath);
+                    return null;
+                }
             }
 
             BufferedImage[][] texTiles = splitImage(texImage);
