@@ -7,12 +7,12 @@ cobblestoneMossy: cobblestoneMossy.png
 sand: sand.png
 sandstone: sandstone.png
 obsidian: obsidian.png
-oreCoal: oreCoal.png
-oreIron: oreIron.png
+oreCoal: [stone.png, oreCoal.png]
+oreIron: [stone.png, oreIron.png]
 oreGold: [stone.png, oreGold.png]
-oreDiamond: oreDiamond.png
-oreRedstone: oreRedstone.png
-oreLapis: oreLapis.png
+oreDiamond: [stone.png, oreDiamond.png]
+oreRedstone: [stone.png, oreRedstone.png]
+oreLapis: [stone.png, oreLapis.png]
 stone: stone.png
 stoneSlab: stoneSlab.png
 stoneBrick: stoneBrick.png
