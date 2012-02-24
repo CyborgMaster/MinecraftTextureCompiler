@@ -1,34 +1,38 @@
+#start with dad's texture pack
 inherit: dad\dad.yml
 
-gravel: dad\gravel_hc.png
-
+#pull in some textures from Ovos Rustic Redemption
 leavesPine: ovosRusticRedemption\leavesPine.png
 melonStems: ovosRusticRedemption\melonStems.png
 vines: ovosRusticRedemption\vines.png
 reeds: ovosRusticRedemption\reeds.png
 
-
+#I like their stone brick, but it doesn't fit the colors of sortex stone
 #stoneBrick: ovosRusticRedemption\stoneBrick.png
 
+#sortex fan version textures I would like to change if I find something better
+brewingStand: sortexFan\brewingStand.png
+lilyPad: sortexFan\lilyPad.png
+mycelium: sortexFan\mycelium.png
+myceliumSide: sortexFan\myceliumSide.png
+dragonEgg: sortexFan\dragonEgg.png
+netherWart: sortexFan\netherWart.png
+sponge: sortexFan\sponge.png
+
+#sortex fan version textures that I'm not sure I totally love
 netherBrick: sortexFan\netherBrick.png
 stoneBrick: sortexFan\stoneBrick.png
 stoneBrickCracked: sortexFan\stoneBrickCracked.png
 stoneBrickMossy: sortexFan\stoneBrickMossy.png
-brewingStand: sortexFan\brewingStand.png
-lilyPad: sortexFan\lilyPad.png
 
+#sotex fan version textures that I like
 enchantingTable: sortexFan\enchantingTable.png
 endPortal: sortexFan\endPortal.png
 endStone: sortexFan\endStone.png
-mycelium: sortexFan\mycelium.png
-myceliumSide: sortexFan\myceliumSide.png
 mushroomGiantRed: sortexFan\mushroomGiantRed.png
 mushroomGiantBrown: sortexFan\mushroomGiantBrown.png
 mushroomGiantStem: sortexFan\mushroomGiantStem.png
 mushroomGiantInside: sortexFan\mushroomGiantInside.png
-dragonEgg: sortexFan\dragonEgg.png
 redstoneRepeater: sortexFan\redstoneRepeaterArrows.png
-netherWart: sortexFan\netherWart.png
 pumpkin: sortexFan\pumpkinNoFace.png
 obsidian: sortexFan\obsidian.png
-sponge: sortexFan\sponge.png
